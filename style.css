@@ -1,0 +1,114 @@
+/* Tarjetas con Efecto de Cristal */
+.glass-card {
+    background: rgba(15, 15, 20, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+}
+
+/* =========================================
+   EFECTO PERSIANA (SHUTTER)
+========================================= */
+#shutter-container {
+    /* Inicialmente se muestra completo */
+    clip-path: inset(0% 0% 0% 0%);
+    transition: clip-path 0.1s ease-out;
+}
+
+/* =========================================
+   AURA DE KI DINÁMICA - REESTRUCTURADA
+========================================= */
+.ki-aura-container {
+    position: relative;
+    display: flex;          /* Forzamos un contenedor flexible */
+    justify-content: center; /* Centrado horizontal perfecto */
+    align-items: center;     /* Centrado vertical perfecto */
+}
+
+.ki-aura-layer {
+    position: absolute;
+    /* ⚠️ TIP PRO: Si tu imagen PNG tiene espacios vacíos transparentes 
+       a los lados dentro del propio archivo, cambia este "50%" por un 
+       "48%" o "52%" para calibrar el Ki exactamente detrás de Goku.
+    */
+    left: 50%; 
+    top: 50%;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    filter: blur(45px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Capa de Ki Interior (Núcleo) */
+.layer-1 {
+    width: 85%;
+    height: 95%;
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(0,245,212,0.8) 40%, transparent 70%);
+    /* pulse-ki solo maneja opacidad | morph-ki maneja bordes | levitate-ki maneja la posición */
+    animation: pulse-ki 1.5s ease-in-out infinite alternate, 
+               morph-ki 4s linear infinite, 
+               levitate-ki 4s ease-in-out infinite;
+}
+
+/* Capa de Ki Exterior (Llamarada) */
+.layer-2 {
+    width: 130%;
+    height: 130%;
+    background: linear-gradient(180deg, rgba(10,36,99,0.6) 0%, rgba(0,245,212,0.4) 50%, transparent 100%);
+    animation: pulse-ki 2.5s ease-in-out infinite alternate-reverse, 
+               morph-ki 6s linear infinite reverse, 
+               levitate-ki 4s ease-in-out infinite;
+    mix-blend-mode: screen;
+}
+
+/* Personaje Principal (Goku) */
+.hero-levitate {
+    display: block;
+    position: relative;
+    z-index: 10;
+    /* Sincronizado exactamente con el tiempo del Ki (4s) */
+    animation: levitate-hero 4s ease-in-out infinite;
+}
+
+/* =========================================
+   KEYFRAMES CORREGIDOS (Sin conflictos)
+========================================= */
+
+/* Controla el brillo del aura sin tocar la posición */
+@keyframes pulse-ki {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Modifica el contorno para que parezca fuego espiritual */
+@keyframes morph-ki {
+    0% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+    50% { border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%; }
+    100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+}
+
+/* Mantiene el centrado (-50%) mientras escala y flota verticalmente */
+@keyframes levitate-ki {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.95); }
+    50% { transform: translate(-50%, -53%) scale(1.05); } /* Sube en sincronía con Goku */
+}
+
+/* Movimiento fluido de Goku */
+@keyframes levitate-hero {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-18px); } /* Sube y baja limpiamente */
+}
+/* =========================================
+   TRANSICIONES DE SCROLL (REVEAL)
+========================================= */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s cubic-bezier(0.215, 0.610, 0.355, 1), transform 1.2s cubic-bezier(0.215, 0.610, 0.355, 1);
+}
+
+.reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
